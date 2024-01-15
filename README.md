@@ -1,19 +1,7 @@
-# Boltz Web App
+This is the source of the web app that is served as a webview in AQUA Wallet to enable Reverse Submarine Swaps and Submarine Swap refunds.
 
-This is the source of the official Boltz Web App served at [boltz.exchange](https://boltz.exchange/). It enables **non-custodial** swaps between different Bitcoin layers.
+This is a fork from [boltz-web-app](https://github.com/BoltzExchange/boltz-web-app) and used with permission from [boltz.exchange](https://boltz.exchange/).
 
-We encourage our technical users to check the code and run the web app locally from source following [these instructions](https://docs.boltz.exchange/v/web-app/).
+For more details around licenseing and setup, please see [boltz-web-app](https://github.com/BoltzExchange/boltz-web-app).
 
-## ⚠️ License ⚠️
-
-Boltz Web App is licensed under [BSL 1.1](https://mariadb.com/bsl11/), a "source available" license which automatically turns into an open source license after 4 years, see [LICENSE](LICENSE) and [BSL FAQs](https://mariadb.com/bsl-faq-mariadb/) for details. If you are interested in a partnership to run the latest version please contact us at [hi@bol.tz](mailto:hi@bol.tz).
-
-Current Partnerships:
-* [Diamond Hands](https://swap.diamondhands.technology/)
-
-## Resources
-
-* Get Help: [Discord](https://discord.gg/QBvZGcW)
-* Read our Blog: [Substack](https://blog.boltz.exchange/)
-* Follow us: [X/Twitter](https://twitter.com/Boltzhq) | [Nostr](https://snort.social/p/npub1psm37hke2pmxzdzraqe3cjmqs28dv77da74pdx8mtn5a0vegtlas9q8970)
-* Open a channel with us: [CLN](https://amboss.space/node/02d96eadea3d780104449aca5c93461ce67c1564e2e1d73225fa67dd3b997a6018) | [LND](https://amboss.space/node/026165850492521f4ac8abd9bd8088123446d126f648ca35e60f88177dc149ceb2)&#x20;
+*NOTE*: AQUA Wallet will be soon moving into a model where these functions are done natively in the app at which point this repo will be deprecated. 
