@@ -7,12 +7,15 @@
 body {
     font-size: 14px;
     margin: 0;
-    background: $background;
     color: $color;
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
 }
 body::-webkit-scrollbar {
     display: none;
@@ -24,13 +27,25 @@ footer {
     margin-top: 42px;
 }
 
+.btn {
+    background-color: white !important;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2) !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    margin-top: 20px !important;
+}
+
+.btn:disabled {
+    background-color: #545c65 !important;
+}
+
 a,
 a:hover {
     color: $primary;
 }
 
 h1 {
-    color: rgba(255, 255, 255, 0.3);
+    color: $color;
 }
 
 h2 {
@@ -65,8 +80,8 @@ hr {
 }
 
 .asset-wrap {
-    background-color: rgb(23, 34, 46);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    color: $color;
     position: absolute;
     border-radius: 29px;
     padding: 1px;
@@ -103,7 +118,7 @@ hr {
 .fees-dyn,
 .icons > div {
     position: relative;
-    text-align: right;
+    text-align: left;
 }
 .icons > div {
     margin: 9px 0;
@@ -179,7 +194,7 @@ hr {
 
 .tag .btn {
     background-color: rgba(0, 0, 0, 0.2);
-    color: white;
+    color: $color;
 }
 
 .btn-small:hover,
@@ -264,8 +279,7 @@ textarea {
 
 input,
 textarea {
-    color: rgba(255, 255, 255, 0.3);
-    background: rgba(0, 0, 0, 0.3);
+    color: $color;
     border: 1px dashed rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     width: 100%;
@@ -275,26 +289,25 @@ textarea {
     margin-bottom: 2px;
     padding: 8px;
     box-sizing: border-box;
+    box-shadow: 0px 0px 20px #00000033;
 }
 input:focus,
 textarea:focus {
     outline: none;
-    color: #ddd;
-    border-color: $primary;
 }
 input.invalid,
 textarea.invalid {
     outline: none;
-    color: #ddd;
     border-color: $error;
 }
 .fees-dyn label {
+    color: $color;
     display: block;
 }
 #receiveAmount,
 #sendAmount {
     font-size: 36px;
-    text-align: right;
+    text-align: left;
 }
 @media (max-width: 488px) {
     #receiveAmount,
@@ -323,15 +336,15 @@ textarea {
 
 #notification {
     background: black;
-    color: white;
+    color: $color;
 }
 .denomination img {
-    filter: brightness(10);
+    filter: brightness(1);
     cursor: pointer;
     width: 28px;
 }
 .denominator {
-    filter: brightness(10);
+    filter: brightness(1);
     width: 15px;
     height: 11px;
     background-repeat: no-repeat;
@@ -362,22 +375,20 @@ textarea {
 }
 
 .frame {
-    color: #fff;
+    color: $color;
     padding: 12px;
-    min-width: 360px;
-    max-width: 480px;
     margin: 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 0;
-    border-right: 0;
-    background: #0003;
+    max-width: 400px;
+}
+
+.card {
+    box-shadow: 0px 0px 24px #cacaca;
+    border-radius: 12px;
 }
 
 @media (min-width: 488px) {
     .frame {
-        margin-top: 74px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 16px;
     }
@@ -536,13 +547,12 @@ textarea {
 }
 
 .address-box {
-    font-size: 18px;
-    background-color: #545c65;
-    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    background-color: rgb(250 250 250);
     border-radius: 7px;
     padding: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgb(234 234 235);
+    color: black;
     margin: 0;
     cursor: pointer;
 }

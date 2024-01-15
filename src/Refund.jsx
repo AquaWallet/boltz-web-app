@@ -9,7 +9,9 @@ import SwapList from "./components/SwapList";
 import { fetcher, refund, refundAddressChange } from "./helper";
 import t from "./i18n";
 import {
+    refundAddress,
     refundTx,
+    setRefundAddress,
     setTimeoutBlockheight,
     setTimeoutEta,
     setTransactionToRefund,
@@ -20,6 +22,7 @@ import {
     swapStatusSuccess,
     updateSwapStatus,
 } from "./utils/swapStatus";
+import { parseRefundParams } from "./utils/embed";
 
 const refundJsonKeys = ["id", "asset", "privateKey", "redeemScript"];
 const refundJsonKeysLiquid = refundJsonKeys.concat("blindingKey");
@@ -41,7 +44,19 @@ const Refund = () => {
         }
     });
 
-    const checkRefundJsonKeys = (input, json) => {
+    const checkRefundJsonKeys = (e) => {
+        const input = e.currentTarget;
+        input.setCustomValidity("");
+        setRefundJson("");
+        setRefundJsonValid(false);
+        let json;
+        try {
+            json = JSON.parse(e.currentTarget.value);
+        } catch {
+            log.error("invalid JSON", e.currentTarget.value);
+            json = {};
+        }
+        
         log.debug("checking refund json", json);
 
         // Redirect to normal flow if swap is in local storage
@@ -180,24 +195,26 @@ const Refund = () => {
             });
     });
 
+    const refundParams = parseRefundParams();
+
+
     return (
         <div id="refund">
             <div class="frame">
-                <h2>{t("refund_a_swap")}</h2>
-                <p>{t("refund_a_swap_subline")}</p>
-                <hr />
                 <SwapList swapsSignal={refundableSwaps} />
                 <hr />
-                <input
+                <textarea
                     required
-                    type="file"
+                    type="text"
                     id="refundUpload"
-                    accept="application/json,image/png"
-                    onChange={(e) => uploadChange(e)}
+                    placeholder="Paste your refund JSON"
+                    onChange={(e) => checkRefundJsonKeys(e)}
                 />
+                <Show when={!refundParams.refundAddress}>
                 <input
                     required
                     disabled={!refundJsonValid()}
+                    value={refundAddress()}
                     onInput={(e) =>
                         setAddressValid(
                             refundAddressChange(e, refundJson().asset),
@@ -208,6 +225,7 @@ const Refund = () => {
                     name="refundAddress"
                     placeholder={t("refund_address_placeholder")}
                 />
+                </Show>
                 <hr />
                 <button
                     class="btn"

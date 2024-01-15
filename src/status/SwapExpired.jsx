@@ -57,9 +57,6 @@ const SwapExpired = () => {
                 </button>
                 <hr />
             </Show>
-            <button class="btn" onClick={() => navigate("/swap")}>
-                {t("new_swap")}
-            </button>
         </div>
     );
 };

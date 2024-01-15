@@ -1,18 +1,15 @@
-import { useNavigate } from "@solidjs/router";
+import checkbox from "../assets/checkbox.svg";
 
 import t from "../i18n";
 
 const TransactionClaimed = () => {
-    const navigate = useNavigate();
+    Done.postMessage(true);
 
     return (
         <div>
             <h2>{t("congrats")}</h2>
-            <p>{t("successfully_swapped")}</p>
+            <img src={checkbox} style="width: 100px; margin-top:50px" alt="done" />
             <hr />
-            <span class="btn" onClick={() => navigate("/swap")}>
-                {t("new_swap")}
-            </span>
         </div>
     );
 };

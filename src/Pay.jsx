@@ -1,6 +1,6 @@
 import { useParams } from "@solidjs/router";
 import log from "loglevel";
-import { Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 import BlockExplorer from "./components/BlockExplorer";
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -30,6 +30,7 @@ import TransactionConfirmed from "./status/TransactionConfirmed";
 import TransactionLockupFailed from "./status/TransactionLockupFailed";
 import TransactionMempool from "./status/TransactionMempool";
 import { swapStatusFailed } from "./utils/swapStatus";
+import TransactionProcessing from "./status/TransactionProcessing";
 
 const Pay = () => {
     const params = useParams();
@@ -92,19 +93,14 @@ const Pay = () => {
         setSwapStatus(null);
     });
 
+    onMount(() => {
+        if (window.Generated) {
+            Generated.postMessage(true);
+        }
+    });
+
     return (
-        <div data-status={swapStatus()} class="frame">
-            <h2>
-                {t("pay_invoice", { id: params.id })}
-                <Show when={swap()}>
-                    <span
-                        data-reverse={swap().reverse}
-                        data-asset={swap().asset}
-                        class="swaplist-asset">
-                        -
-                    </span>
-                </Show>
-            </h2>
+        <div data-status={swapStatus()} class="frame card">
             <p>{t("pay_invoice_subline")}</p>
             <Show when={swap()}>
                 <Show when={swap().refundTx}>
@@ -121,13 +117,6 @@ const Pay = () => {
                     <Show when={swapStatus() === null}>
                         <LoadingSpinner />
                     </Show>
-                    <Show when={swapStatus()}>
-                        <p>
-                            {t("status")}:{" "}
-                            <span class="btn-small">{swapStatus()}</span>
-                        </p>
-                        <hr />
-                    </Show>
                     <Show when={swapStatus() == "swap.expired"}>
                         <SwapExpired />
                     </Show>
@@ -141,11 +130,10 @@ const Pay = () => {
                         }>
                         <TransactionClaimed />
                     </Show>
-                    <Show when={swapStatus() == "transaction.confirmed"}>
-                        <TransactionConfirmed />
-                    </Show>
-                    <Show when={swapStatus() == "transaction.mempool"}>
-                        <TransactionMempool />
+                    <Show when={["transaction.confirmed", "transaction.mempool"].includes(swapStatus())}>
+                    <div>
+                        <TransactionProcessing />
+                    </div>
                     </Show>
                     <Show when={swapStatus() == "invoice.failedToPay"}>
                         <InvoiceFailedToPay />
@@ -163,22 +151,6 @@ const Pay = () => {
                         <SwapCreated />
                     </Show>
 
-                    <Show
-                        when={
-                            swap().asset !== RBTC &&
-                            swapStatus() !== null &&
-                            swapStatus() !== "swap.created"
-                        }>
-                        <BlockExplorer
-                            asset={swap().asset}
-                            txId={swap().claimTx}
-                            address={
-                                !swap().reverse
-                                    ? swap().address
-                                    : swap().lockupAddress
-                            }
-                        />
-                    </Show>
                     <Show
                         when={
                             swap().asset === RBTC &&

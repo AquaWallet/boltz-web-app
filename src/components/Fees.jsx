@@ -53,38 +53,17 @@ const Fees = () => {
 
     return (
         <div class="fees-dyn">
-            <div class="denomination">
-                <Show when={!isMobile}>
-                    <label>{t("denomination")}: </label>
-                </Show>
-                <img
-                    src={btcSvg}
-                    onClick={() => setDenomination("btc")}
-                    class={denomination() == "btc" ? "active" : ""}
-                    alt="denominator"
-                />
-                <img
-                    src={satSvg}
-                    onClick={() => setDenomination("sat")}
-                    class={denomination() == "sat" ? "active" : ""}
-                    alt="denominator"
-                />
-            </div>
             <label>
                 {t("network_fee")}:{" "}
                 <span class="network-fee">
                     {formatAmount(minerFee(), true)}
-                    <span
-                        class="denominator"
-                        data-denominator={denomination()}></span>
+                    <span> sats</span>
                 </span>
                 <br />
                 {t("fee")} ({boltzFee()}%):{" "}
                 <span class="boltz-fee">
                     {formatAmount(calculateBoltzFeeOnSend(sendAmount()), true)}
-                    <span
-                        class="denominator"
-                        data-denominator={denomination()}></span>
+	            <span> sats</span>
                 </span>
             </label>
         </div>

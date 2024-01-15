@@ -48,6 +48,8 @@ import {
     sendAmountFormatted,
     setAddressValid,
     setAmountChanged,
+    setAssetReceive,
+    setAssetSend,
     setInvoice,
     setInvoiceValid,
     setNotification,
@@ -81,6 +83,7 @@ import {
 } from "./utils/invoice";
 import { validateResponse } from "./utils/validation";
 import { enableWebln } from "./utils/webln";
+import { parseSwapParams } from "./utils/embed";
 
 const Create = () => {
     const { getEtherSwap } = useWeb3Signer();
@@ -88,10 +91,11 @@ const Create = () => {
     let invoiceInputRef, receiveAmountRef, sendAmountRef, addressInputRef;
 
     onMount(() => {
-        sendAmountRef.focus();
+        create();
     });
 
     const [buttonDisable, setButtonDisable] = createSignal(true);
+    const [creatingSwap, setCreatingSwap] = createSignal(false);
     const [sendAmountValid, setSendAmountValid] = createSignal(true);
 
     createEffect(
@@ -175,6 +179,16 @@ const Create = () => {
         setSendAmount(BigInt(satAmount));
         setReceiveAmount(BigInt(receiveAmount));
         validateAmount();
+        resetInvoice();
+    };
+
+    const initSendAmount = (value) => {
+        const amount = value.trim();
+        const satAmount = convertAmount(Number(amount), denominations.sat);
+        const receiveAmount = calculateReceiveAmount(satAmount);
+        setAmountChanged(sideSend);
+        setSendAmount(BigInt(satAmount));
+        setReceiveAmount(BigInt(receiveAmount));
         resetInvoice();
     };
 
@@ -431,23 +445,26 @@ const Create = () => {
         }
     });
 
+    const swapParams = parseSwapParams();
+
+    if (swapParams.assetSend) {
+        setAssetSend(swapParams.assetSend);
+    }
+    if (swapParams.assetReceive) {
+        setAssetReceive(swapParams.assetReceive);
+    }
+
+    if (swapParams.address) {
+        setOnchainAddress(swapParams.address);
+        setAddressValid(true);
+    }
+
+    if (swapParams.amount) {
+        initSendAmount(swapParams.amount);
+    }
+
     return (
-        <div class="frame" data-reverse={reverse()} data-asset={asset()}>
-            <h2>{t("create_swap")}</h2>
-            <p>
-                {t("create_swap_subline")} <br />
-                {t("send")}{" "}
-                <ClickableAmount
-                    label={t("min")}
-                    onClick={setAmount}
-                    amount={minimum}
-                />{" "}
-                <ClickableAmount
-                    label={t("max")}
-                    onClick={setAmount}
-                    amount={maximum}
-                />
-            </p>
+        <div style={{visibility: 'hidden'}} class="frame" data-reverse={reverse()} data-asset={asset()}>
             <div class="icons">
                 <div>
                     <Asset side={sideSend} signal={assetSend} />
@@ -457,23 +474,24 @@ const Create = () => {
                         required
                         type="text"
                         maxlength={calculateDigits()}
+                        placeholder="Enter amount in Sats"
                         inputmode={
                             denomination() == "btc" ? "decimal" : "numeric"
                         }
                         id="sendAmount"
                         data-testid="sendAmount"
-                        value={sendAmountFormatted()}
+                        value={Number(sendAmount()) > 0 ? sendAmountFormatted() : ''}
                         onpaste={(e) => validatePaste(e)}
                         onKeypress={(e) => validateInput(e)}
                         onInput={(e) => changeSendAmount(e)}
                     />
                 </div>
-                <Reverse />
-                <div>
+                <div style={{ display: 'none' }}>
                     <Asset side={sideReceive} signal={assetReceive} />
                     <input
                         ref={receiveAmountRef}
                         required
+                        disabled
                         type="text"
                         maxlength={calculateDigits()}
                         inputmode={
@@ -488,17 +506,25 @@ const Create = () => {
                     />
                 </div>
             </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <ClickableAmount
+                    label={"Min"}
+                    onClick={setAmount}
+                    amount={minimum}
+                />
+                <ClickableAmount
+                    label={"Maximum"}
+                    onClick={setAmount}
+                    amount={maximum}
+                />
+            </div>
             <Fees />
-            <hr />
+
             <Show when={asset() === RBTC}>
                 <ConnectMetamask
                     showAddress={true}
                     setAddressValid={setAddressValid}
                 />
-                <hr />
-            </Show>
-            <Show when={reverse() && asset() !== RBTC}>
-                <AddressInput setAddressValid={setAddressValid} />
                 <hr />
             </Show>
             <Show when={!reverse()}>
@@ -530,18 +556,20 @@ const Create = () => {
             <Show when={online() && wasmSupported()}>
                 <button
                     id="create-swap"
-                    class="btn"
+                    class="btn btn-submit"
                     disabled={buttonDisable() ? "disabled" : ""}
                     onClick={() => {
                         setButtonDisable(true);
+                        setCreatingSwap(true);
                         create()
-                            .then((res) => !res && setButtonDisable(false))
+                            .then((res) => !res && setButtonDisable(false) && setCreatingSwap(false))
                             .catch((e) => {
                                 log.warn("create failed", e);
                                 setButtonDisable(false);
+                                setCreatingSwap(false)
                             });
                     }}>
-                    {t("create_swap")}
+                    {creatingSwap() ? 'loading...' : t("create_swap")}
                 </button>
             </Show>
             <Show when={!online()}>

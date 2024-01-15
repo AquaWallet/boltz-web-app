@@ -8,12 +8,9 @@ const Asset = ({ side, signal }) => {
     };
 
     return (
-        <div class="asset-wrap" onClick={openSelect}>
+        <div class="asset-wrap">
             <div class={`asset asset-${signal()}`}>
                 <div class="asset-selection">
-                    <span class="icon"></span>
-                    <span class="asset-text"></span>
-                    <span class="arrow-down"></span>
                 </div>
             </div>
             <div class="assets-select"></div>

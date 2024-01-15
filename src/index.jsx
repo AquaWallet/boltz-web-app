@@ -6,16 +6,13 @@ import { render } from "solid-js/web";
 
 import Create from "./Create";
 import Error from "./Error";
-import Footer from "./Footer";
-import { Hero, setHideHero } from "./Hero";
-import History from "./History";
-import Nav from "./Nav";
+import { setHideHero } from "./Hero";
 import NotFound from "./NotFound";
 import Notification from "./Notification";
 import Pay from "./Pay";
 import Refund from "./Refund";
 import RefundStep from "./RefundStep";
-import { loglevel, network } from "./config";
+import { loglevel } from "./config";
 import { Web3SignerProvider } from "./context/Web3";
 import { checkReferralId } from "./helper";
 import { detectLanguage } from "./i18n/detect";
@@ -53,33 +50,23 @@ if ("serviceWorker" in navigator) {
         });
 }
 
-document.body.classList.remove("loading");
+const loaderElement = document.getElementsByClassName("initial-loader")[0];
+loaderElement.remove();
 
 const cleanup = render(
     () => (
         <Router>
             <Web3SignerProvider>
-                <Show when={!embedded()}>
-                    <Nav network={network} />
-                </Show>
                 <Routes>
                     <Route path="*" element={<Navigate href={"/404"} />} />
                     <Route path="/404" component={NotFound} />
-                    <Route path="/" component={Hero} />
-                    <Route path="/swap" component={Create} />
-                    {/* Compatibility with link in Breez:
-                        https://github.com/breez/breezmobile/blob/a1b0ffff902dfa2210af8fdb047b715535ff11e9/src/json/vendors.json#L30 */}
-                    <Route path="/swapbox" component={Create} />
+                    <Route path="/" component={Create} />
                     <Route path="/swap/:id" component={Pay} />
                     <Route path="/swap/refund/:id" component={RefundStep} />
                     <Route path="/error" component={Error} />
                     <Route path="/refund" component={Refund} />
-                    <Route path="/history" component={History} />
                 </Routes>
-                <Show when={!embedded()}>
-                    <Notification />
-                    <Footer />
-                </Show>
+                <Notification />
             </Web3SignerProvider>
         </Router>
     ),

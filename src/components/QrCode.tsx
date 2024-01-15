@@ -19,7 +19,7 @@ export const Qrcode = (params: QrCodeProps) => {
 
     return (
         <div id="qrcode" style="position: relative;">
-            <img src={dataUrl()} alt="Payment QR Code" />
+            <img width="70%" src={dataUrl()} alt="Payment QR Code" />
             <span></span>
         </div>
     );

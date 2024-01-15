@@ -1,6 +1,6 @@
 import { getAddress, getNetwork } from "../compat";
 import t from "../i18n";
-import { asset, setAddressValid, setOnchainAddress } from "../signals";
+import { asset, setAddressValid, onchainAddress, setOnchainAddress } from "../signals";
 
 const AddressInput = () => {
     const validateAddress = (input: EventTarget & HTMLInputElement) => {
@@ -28,6 +28,7 @@ const AddressInput = () => {
             onInput={(e) => validateAddress(e.currentTarget)}
             onKeyUp={(e) => validateAddress(e.currentTarget)}
             onPaste={(e) => validateAddress(e.currentTarget)}
+            value={onchainAddress()}
             type="text"
             id="onchainAddress"
             name="onchainAddress"

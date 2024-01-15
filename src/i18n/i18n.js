@@ -29,7 +29,7 @@ const dict = {
         blockexplorer_refund_tx: "refund transaction",
         help: "Help",
         network_fee: "Network Fee",
-        fee: "Boltz Fee",
+        fee: "Service Fee",
         denomination: "Denomination",
         send: "Send",
         claim: "Claim",
@@ -43,7 +43,7 @@ const dict = {
         footer: "Made with ❤️ by Team Boltz",
         create_channel: "Create Lightning Channel",
         create_channel_subline: "Channel Inbound or Outbound Capacity",
-        create_swap: "Create Atomic Swap",
+        create_swap: "Create Invoice",
         create_swap_subline: "Payment includes network and boltz service fees",
         cancel_swap: "Cancel Swap",
         new_swap: "New Swap",
@@ -52,7 +52,7 @@ const dict = {
             "Network fee was updated based on network situation, please confirm new amounts and continue with swap.",
         create_and_paste:
             "Paste a bolt11 lightning invoice\n or a Lightning address\nor a LNURL Paylink\n\nAmount: {{ amount }} {{ denomination }}",
-        congrats: "Congratulations!",
+        congrats: "Payment Received!",
         successfully_swapped: "Your swap completed successfully",
         timeout_eta: "Timeout ETA",
         pay_invoice: "Swap: {{ id }}",
@@ -88,7 +88,7 @@ const dict = {
         backup_refund_list_clear_history: "clear your browsing history",
         backup_refund_skip:
             "If any of the above applies to you, we strongly recommend downloading this refund file!",
-        refund_a_swap: "Refund a swap",
+        refund_a_swap: "Refund",
         refund_a_swap_subline:
             "Upload your refund file and reclaim your locked funds",
         refund_past_swaps: "Past swaps",
@@ -114,7 +114,7 @@ const dict = {
         pay_invoice_webln: "pay invoice via WebLN",
         select_asset: "Select {{ direction }} Asset",
         tx_confirmed: "Transaction confirmed",
-        tx_ready_to_claim: "Claiming transaction now...",
+        tx_ready_to_claim: "Processing transaction. Please stay on this screen.",
         transaction_refunded: "Boltz has refunded the Transaction",
         refunded: "Swap has been refunded",
         broadcasted: "Refund broadcasted",
@@ -143,7 +143,7 @@ const dict = {
         peers: "Number of Peers",
         num_channels: "Number of Channels",
         beta_caution: "BETA - USE WITH CAUTION!",
-        warning_return: "Important: Return to this page after paying invoice",
+        warning_return: "Please stay on this page till the payment is received",
         warning_expiry:
             "Make sure your transaction confirms within ~24 hours after creation of this swap!",
         not_found: "404 - Page Not Found",
